@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import Login from '../../assets/Login.png'
 import google from '../../assets/google.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {RiEyeFill, RiEyeCloseFill} from 'react-icons/ri'
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup  } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 
 const Registration = () => {
     const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -43,8 +45,11 @@ const Registration = () => {
         if(email && password && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)){
             signInWithEmailAndPassword(auth, email, password)
             .then(() => {
-               toast.success('Login Successfully')
-               setError('')
+               toast.success('Login Successfully');
+               setError('');
+               setTimeout(() => {
+                navigate('/')
+               },3000)
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -54,6 +59,8 @@ const Registration = () => {
                 }
             });
         }
+
+        
         // else if(!/^(?=.*[a-z])/.test(password)){
         //     setPassworderr('The string must contain at least 1 lowercase alphabetical character')
         // }else if(!/^(?=.*[A-Z])/.test(password)){
@@ -66,6 +73,20 @@ const Registration = () => {
         //     setPassworderr('The string must be eight characters or longer') 
         // }
     }
+
+    const handelGoogleSignIn = () =>{
+        signInWithPopup(auth, provider)
+        .then(() => {
+            toast.success('Login Done')
+            setTimeout(() => {
+                navigate('/')
+               },3000)
+        }).catch((error) => {
+            const errorCode = error.code;
+            console.log(errorCode)
+        });
+     }
+
   return (
     <div className='flex'>
         <div className='w-1/2 flex justify-end mr-[69px]'>
@@ -83,7 +104,7 @@ const Registration = () => {
             />
             <div className='pt-[225px]'>
                 <h2 className='font-sans font-bold text-[#03014C] text-[33px]'>Login to your account!</h2>
-                <img className='mt-[25px]' src={google} alt="" />
+                <img onClick={handelGoogleSignIn} className='mt-[25px]' src={google} alt="" />
                 <p className='font-nun font-bold text-red-500 text-[20px]'>{error}</p>
                 <div className='relative mt-[40px]'>
                  <input onChange={handleEmail} value={email} className='w-96 border-b border-[#B8BACF] outline-none py-[26px]' type="email" />
@@ -102,11 +123,13 @@ const Registration = () => {
                     }
                     <p className='font-nun font-semibold text-red-500'>{passworderr}</p>
                 </div>
+                <p className='font-sans font-bold cursor-pointer text-[16px] text-[#EA6C00] mt-[30px]'><Link to='/forgotPassword'>Forgot Password</Link></p>
                 <div onClick={handleSubmit}>
-                    <button className='bg-primary w-96 py-[20px] mt-[50px] rounded-md'><a className='font-sans font-semibold text-[28px] text-white' href="">Login to Continue</a></button>
+                    <button className='bg-primary w-96 py-[20px] mt-[30px] rounded-md'><p className='font-sans font-semibold text-[28px] text-white' href="">Login to Continue</p></button>
                 </div>
                 <div className='w-96 mt-[35px]'>
                     <p className='font-sans font-regular text-[13px] text-[#03014C]'>Don’t have an account ?      <span className='font-sans font-bold text-[13px] text-[#EA6C00]' href=""><Link to='/registration'>Sign Up</Link></span></p>
+
                 </div>
             </div>
         </div>

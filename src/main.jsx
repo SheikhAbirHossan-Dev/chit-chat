@@ -10,10 +10,16 @@ import Registration from './pages/Registration/Registration.jsx';
 import Login from './pages/Login/Login.jsx';
 import firebaseConfig from './authentication/firebaseconfig.jsx';
 import 'react-toastify/dist/ReactToastify.css';
+import Home from './pages/Home/Home.jsx';
+import ForgotPassword from './pages/ForgotPassword/Forgotpassword.jsx';
 
 
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home/>
+  },
   {
     path: "/registration",
     element: <Registration/>
@@ -21,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login/>
+  },
+  {
+    path: "/forgotPassword",
+    element: <ForgotPassword/>
   },
 ]);
 
