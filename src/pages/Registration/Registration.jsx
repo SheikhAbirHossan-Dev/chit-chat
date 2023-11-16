@@ -125,7 +125,7 @@ const Registration = () => {
                     <p className='font-nun font-semibold text-red-500'>{passworderr}</p>
                 </div>
                 <div onClick={handleSubmit}>
-                    <button className='bg-primary w-96 py-[20px] mt-[50px] rounded-full cursor-pointer font-nun font-semibold text-[20px] text-white cursor-pointer'>Sign up</button>
+                    <button className='bg-primary w-96 py-[20px] mt-[50px] rounded-full cursor-pointer font-nun font-semibold text-[20px] text-white'>Sign up</button>
                 </div>
                 <div className='w-96 text-center mt-[35px]'>
                     <p className='font-sans font-regular text-[13px] text-[#03014C]'>Already  have an account ? <span className='font-sans font-bold text-[13px] text-[#EA6C00]' href=""><Link to='/login'>Sign In</Link></span></p>

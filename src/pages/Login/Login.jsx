@@ -5,9 +5,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import {RiEyeFill, RiEyeCloseFill} from 'react-icons/ri'
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup  } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
+import { useDispatch } from 'react-redux'
+import { userLoginInfo } from '../../Slices/userSlice'
 
 const Registration = () => {
     const auth = getAuth();
+    const dispatch = useDispatch()
     const provider = new GoogleAuthProvider();
     const navigate = useNavigate()
 
@@ -44,8 +47,11 @@ const Registration = () => {
 
         if(email && password && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)){
             signInWithEmailAndPassword(auth, email, password)
-            .then(() => {
+            .then((user) => {
                toast.success('Login Successfully');
+               console.log(user.user)
+               dispatch(userLoginInfo(user.user))
+               localStorage.setItem('userLoginInfo', JSON.stringify(userLoginInfo(user.user)))
                setError('');
                setTimeout(() => {
                 navigate('/')
@@ -104,7 +110,7 @@ const Registration = () => {
             />
             <div className='pt-[225px]'>
                 <h2 className='font-sans font-bold text-[#03014C] text-[33px]'>Login to your account!</h2>
-                <img onClick={handelGoogleSignIn} className='mt-[25px]' src={google} alt="" />
+                <img onClick={handelGoogleSignIn} className='mt-[25px] cursor-pointer' src={google} alt="" />
                 <p className='font-nun font-bold text-red-500 text-[20px]'>{error}</p>
                 <div className='relative mt-[40px]'>
                  <input onChange={handleEmail} value={email} className='w-96 border-b border-[#B8BACF] outline-none py-[26px]' type="email" />
