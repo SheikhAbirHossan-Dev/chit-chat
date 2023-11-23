@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import Register from '../../assets/Register.png'
 import {RiEyeFill, RiEyeCloseFill} from 'react-icons/ri'
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 
 const Registration = () => {
     const auth = getAuth();
-    // const navigete = useNavigate()
+    const navigete = useNavigate()
     
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
@@ -62,7 +62,9 @@ const Registration = () => {
                     setPassword('');
                 });
                
-                // navigete('/login');
+                setTimeout(() => {
+                    navigete('/login');
+                }, 3000);
             })
             .catch((error) => {
                 const errorCode = error.code;
